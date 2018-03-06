@@ -1,36 +1,33 @@
 package hme.poc.hmepoc.spammers
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import hme.poc.hmepoc.provider.TestMessagesProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.scheduling.annotation.Async
 
 class KafkaSpammer extends AbstractSpammer {
 
-
-    @Value('${spammer.numOfMessages}')
-    private Integer numOfMessages
-
     @Value('${kafka.topic.poc}')
     private String topic
 
+    protected final KafkaTemplate<String, byte[]> kafkaTemplate
 
-    KafkaSpammer(KafkaTemplate<String, byte[]> kafkaTemplate, ObjectMapper objectMapper) {
-        super(kafkaTemplate, objectMapper)
+    KafkaSpammer(final KafkaTemplate<String, byte[]> kafkaTemplate,
+                 final ObjectMapper objectMapper,
+                 final TestMessagesProvider testMessagesProvider) {
+        super(testMessagesProvider, objectMapper)
+        this.kafkaTemplate = kafkaTemplate
     }
 
     @Async
     @Override
     void spam() {
-        logger.info("build $numOfMessages messages")
-        def messages = (1..numOfMessages).collect{
-            objectMapper.writeValueAsBytes( buildTestMessage() )
-        } as List<byte[]>
-
-        logger.info("sending $numOfMessages messages")
-        messages.forEach{
+        def messages = testMessagesProvider.getMessages()
+        logger.info("sending $messages.size() messages")
+        messages.parallelStream().forEach(){
             kafkaTemplate.send(topic, it )
         }
-        logger.info("$numOfMessages messages built and sent")
+        logger.info("$messages.size() messages sent")
     }
 }

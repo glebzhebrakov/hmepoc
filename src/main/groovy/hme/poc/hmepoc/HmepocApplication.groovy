@@ -1,6 +1,7 @@
 package hme.poc.hmepoc
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import hme.poc.hmepoc.provider.TestMessagesProvider
 import hme.poc.hmepoc.spammers.AbstractSpammer
 import hme.poc.hmepoc.spammers.KafkaSpammer
 import org.springframework.boot.SpringApplication
@@ -20,8 +21,10 @@ class HmepocApplication {
 	}
 
 	@Bean
-	AbstractSpammer spammer(KafkaTemplate<String, byte[]> kafkaTemplate, ObjectMapper objectMapper ) {
-		new KafkaSpammer(kafkaTemplate, objectMapper)
+	AbstractSpammer spammer(final TestMessagesProvider testMessagesProvider,
+							final KafkaTemplate<String, byte[]> kafkaTemplate,
+							final ObjectMapper objectMapper ) {
+		new KafkaSpammer(kafkaTemplate, objectMapper, testMessagesProvider)
 	}
 
 }
