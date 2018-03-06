@@ -1,0 +1,11 @@
+kafka:
+  bootstrap-servers: localhost:9092
+  group:
+    id: test-consumer-group
+  topic:
+    poc: poc
+server:
+  port: 0
+
+spammer:
+  numOfMessages: 250000
