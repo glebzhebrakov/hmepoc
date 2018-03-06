@@ -37,6 +37,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.cloud:spring-cloud-stream')
 	compile('org.springframework.cloud:spring-cloud-stream-binder-kafka')
+	compile('org.springframework.cloud:spring-cloud-stream-binder-rabbit')
 	compile('org.springframework.kafka:spring-kafka')
 	compile('org.codehaus.groovy:groovy')
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.14'

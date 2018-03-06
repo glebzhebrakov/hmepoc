@@ -3,6 +3,7 @@ package hme.poc.hmepoc.spammers
 import com.fasterxml.jackson.databind.ObjectMapper
 import hme.poc.hmepoc.provider.TestMessagesProvider
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.scheduling.annotation.Async
 

@@ -5,6 +5,10 @@ kafka:
     id: test-consumer-group
   topic:
     poc: poc
+
+rabbit:
+  queueName: poc
+  exchangeName: poce
 server:
   port: 0
 
@@ -17,5 +21,4 @@ spring:
         binder:
           brokers: 192.168.102.159
           zk-nodes: 192.168.102.159
-
 
