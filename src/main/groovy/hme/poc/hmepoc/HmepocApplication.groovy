@@ -16,10 +16,23 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
+import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.core.ProducerFactory
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 
 @SpringBootApplication
 @EnableScheduling
@@ -28,6 +41,29 @@ class HmepocApplication {
 	static void main(String[] args) {
 		SpringApplication.run HmepocApplication, args
 	}
+
+	@Value('${kafka.bootstrap-servers}')
+	private String bootstrapServers;
+
+//	@Bean
+//	public Map<String, Object> producerConfigs() {
+//		Map<String, Object> props = new HashMap<>();
+//		// list of host:port pairs used for establishing the initial connections to the Kakfa cluster
+//		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+//				bootstrapServers);
+//
+//		return props;
+//	}
+//
+//	@Bean
+//	public ProducerFactory<String, byte[]> producerFactory() {
+//		return new DefaultKafkaProducerFactory<>(producerConfigs());
+//	}
+//
+//	@Bean
+//	public KafkaTemplate<String, byte[]> kafkaTemplate() {
+//		return new KafkaTemplate<>(producerFactory());
+//	}
 
     @Profile('kafka')
 	@Bean

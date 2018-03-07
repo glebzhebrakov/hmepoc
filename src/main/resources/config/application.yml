@@ -1,6 +1,6 @@
 
 kafka:
-  bootstrap-servers: localhost:9092
+  bootstrap-servers: 10.0.2.2:9092
   group:
     id: test-consumer-group
   topic:
@@ -15,10 +15,8 @@ server:
 spammer:
   numOfMessages: 250000
 spring:
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: 192.168.102.159
-          zk-nodes: 192.168.102.159
-
+  rabbitmq:
+    host: 10.0.2.2
+  kafka:
+    producer:
+      bootstrap-servers: 10.0.2.2:9092
