@@ -1,6 +1,6 @@
 
 kafka:
-  bootstrap-servers: 10.0.2.2:9092
+  bootstrap-servers: 127.0.0.1:9092
   group:
     id: test-consumer-group
   topic:
@@ -16,7 +16,7 @@ spammer:
   numOfMessages: 250000
 spring:
   rabbitmq:
-    host: 10.0.2.2
+    host: 127.0.0.1
   kafka:
     producer:
-      bootstrap-servers: 10.0.2.2:9092
+      bootstrap-servers: 127.0.0.1:9092
