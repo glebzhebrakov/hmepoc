@@ -41,6 +41,8 @@ dependencies {
 	compile('org.springframework.kafka:spring-kafka')
 	compile('org.codehaus.groovy:groovy')
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.14'
+	compile 'com.microsoft.azure:azure-eventhubs:1.0.0'
+	compile 'com.microsoft.azure:azure-eventhubs-eph:1.0.0'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.cloud:spring-cloud-stream-test-support')

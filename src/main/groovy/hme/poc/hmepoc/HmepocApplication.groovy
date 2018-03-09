@@ -1,8 +1,11 @@
 package hme.poc.hmepoc
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder
+import com.microsoft.azure.eventhubs.EventHubClient
 import hme.poc.hmepoc.provider.TestMessagesProvider
 import hme.poc.hmepoc.spammers.AbstractSpammer
+import hme.poc.hmepoc.spammers.AzureEventHubSpammer
 import hme.poc.hmepoc.spammers.KafkaSpammer
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.Binding;
@@ -32,7 +35,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.core.ProducerFactory
+
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @EnableScheduling
@@ -89,6 +95,13 @@ class HmepocApplication {
 		new RabbitMQSpammer(queueName, rabbitTemplate, testMessagesProvider, objectMapper)
 	}
 
+	@Profile('azure')
+	@Bean
+	AbstractSpammer azureSpammer(final EventHubClient eventHubClient,
+								 final TestMessagesProvider testMessagesProvider,
+								 final ObjectMapper objectMapper ) {
+		new AzureEventHubSpammer(eventHubClient, testMessagesProvider, objectMapper)
+	}
 
 	@Bean
 	Queue queue(@Value('${rabbit.queueName}') String queueName) {
@@ -105,4 +118,13 @@ class HmepocApplication {
 		BindingBuilder.bind(queue).to(exchange).with(queueName)
 	}
 
+
+	@Bean
+	EventHubClient eventHubClient(@Value('${azure.connectionString}') String connectionString){
+
+		def connStr = new ConnectionStringBuilder(connectionString)
+
+		def ehClient = EventHubClient.create(connStr.toString(), Executors.newCachedThreadPool())
+		ehClient.get()
+	}
 }
