@@ -3,6 +3,7 @@ package hme.poc.hmepoc.provider
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.javafaker.Faker
 import hme.poc.hmepoc.dto.TestMessage
+import org.apache.commons.io.FileUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -28,6 +29,15 @@ class TestMessagesProvider {
     List<byte[]> getMessages() {
         messages
     }
+
+    List<byte[]> getRealMessages() {
+        def outpath = '/home/glibzhebrakov/Downloads/1/out'
+        def files = FileUtils.listFiles(new File(outpath), ['json'] as String[], false) as List
+        files.collect {
+            FileUtils.readFileToByteArray(it as File)
+        }
+    }
+
 
     protected static TestMessage buildTestMessage() {
         new TestMessage().with {

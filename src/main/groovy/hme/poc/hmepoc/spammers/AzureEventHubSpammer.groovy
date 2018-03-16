@@ -17,9 +17,18 @@ class AzureEventHubSpammer extends AbstractSpammer {
 
     @Override
     void spam() {
-        def messages = testMessagesProvider.messages
+        def messages = testMessagesProvider.realMessages
         logger.info('send messages to azure')
-        eventHubClient.sendSync(messages.collect {EventData.create(it)})
+        messages.each {
+            eventHubClient.sendSync(EventData.create(it))
+        }
+//        messages.collate(7).each { chank ->
+//            eventHubClient.sendSync(chank.collect {EventData.create(it)})
+//        }
+//        messages.collect {EventData.create(it)}.each {
+//            eventHubClient.sendSync(it)
+//        }
+
 //        eventHubClient.send
 //        messages.parallelStream().forEach{
 //            eventHubClient.sendSync(EventData.create(it))
